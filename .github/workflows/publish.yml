@@ -7,15 +7,22 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      npm_config_build_from_source: false
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm install --no-frozen-lockfile --ignore-scripts
-      - run: node_modules/.bin/tsc
-      - run: node_modules/.bin/gulp build:icons
-      - run: npm publish --access public
+      - name: Install (skip native builds)
+        run: npm install --no-frozen-lockfile
+        continue-on-error: true
+      - name: Install production only (fallback)
+        run: npm install --no-frozen-lockfile --ignore-scripts
+      - name: Build
+        run: npm run build
+      - name: Publish
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
