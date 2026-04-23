@@ -11,10 +11,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '20'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm install --no-frozen-lockfile --ignore-optional
-      - run: npm run build
+      - run: npm install --no-frozen-lockfile --ignore-scripts
+      - run: node_modules/.bin/tsc
+      - run: node_modules/.bin/gulp build:icons
       - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
