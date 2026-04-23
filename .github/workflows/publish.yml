@@ -13,7 +13,7 @@ jobs:
         with:
           node-version: '22'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm install --no-frozen-lockfile
+      - run: npm install --no-frozen-lockfile --ignore-scripts
       - run: npm run build
       - run: npm publish --access public
         env:
