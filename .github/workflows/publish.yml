@@ -7,18 +7,16 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    env:
-      npm_config_build_from_source: false
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
-      - name: Install (skip native builds)
+      - name: Install
         run: npm install --no-frozen-lockfile
         continue-on-error: true
-      - name: Install production only (fallback)
+      - name: Install fallback
         run: npm install --no-frozen-lockfile --ignore-scripts
       - name: Build
         run: npm run build
